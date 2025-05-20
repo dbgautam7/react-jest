@@ -1,10 +1,16 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Users from "./Users";
 
+beforeEach(() => {
+  console.log("Called before each test");
+});
+
 describe("Users", () => {
-  test("renders heading", async () => {
+  test.only("renders heading", async () => {
     render(<Users />);
-    expect(screen.getByRole("heading", { name: "Users" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Users___" })
+    ).toBeInTheDocument();
   });
 
   test("renders paragraph", () => {
@@ -45,9 +51,32 @@ describe("Users", () => {
     render(<Users />);
     const input = screen.getByRole("textbox");
     expect(input).toBeInTheDocument();
-    expect(input).toHaveAttribute("value", "Ram Krishna");
     expect(input).toHaveAttribute("placeholder", "Enter username");
   });
+
+  test("input field updates on change", () => {
+    render(<Users />);
+    const input: HTMLInputElement = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: "DB" } });
+    expect((input as HTMLInputElement).value).toBe("DB Gautam");
+  });
+
+  test.only("button click event test case", () => {
+    render(<Users />);
+    const btn = screen.getByRole("button");
+    fireEvent.click(btn);
+    expect(screen.getByText("Submit")).toBeInTheDocument();
+  });
 });
+
+//snapshot test
+// test("Snapshot for Sum", () => {
+//   const container = render(<Users />);
+//   expect(container).toMatchSnapshot();
+// });
+
+// afterEach(() => {
+//   console.log("Called after each test");
+// });
 
 // We recommend installing an extension to run jest tests.

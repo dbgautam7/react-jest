@@ -1,7 +1,11 @@
+import { useState } from "react";
+
 const Users = () => {
+  const [name, setName] = useState("");
+  const [btnName, setBtnName] = useState("");
   return (
     <div>
-      <h1>Users</h1>
+      <h1>Users___</h1>
       <p>This is the users list page 11.</p>
       <ul>
         <li>name 1</li>
@@ -9,7 +13,17 @@ const Users = () => {
         <li>name 3</li>
       </ul>
 
-      <input type="text" placeholder="Enter username" value="Ram Krishna" />
+      <input
+        type="text"
+        placeholder="Enter username"
+        value={name}
+        onChange={(e) => setName(e.target.value + " " + "Gautam")}
+      />
+      <br />
+      <br />
+      <br />
+      <button onClick={() => setBtnName("Submit")}>Click Me</button>
+      <p>{btnName}</p>
       <br />
       <br />
       <br />
