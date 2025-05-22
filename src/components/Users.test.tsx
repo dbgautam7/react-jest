@@ -1,12 +1,15 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { configure, fireEvent, render, screen } from "@testing-library/react";
 import Users from "./Users";
+import { handleOtherMethodClick } from "../helper";
+
+configure({ testIdAttribute: "element-id" });
 
 beforeEach(() => {
   console.log("Called before each test");
 });
 
 describe("Users", () => {
-  test.only("renders heading", async () => {
+  test("renders heading", async () => {
     render(<Users />);
     expect(
       screen.getByRole("heading", { name: "Users___" })
@@ -54,18 +57,50 @@ describe("Users", () => {
     expect(input).toHaveAttribute("placeholder", "Enter username");
   });
 
-  test("input field updates on change", () => {
+  test.only("input field updates on change", () => {
     render(<Users />);
     const input: HTMLInputElement = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "DB" } });
     expect((input as HTMLInputElement).value).toBe("DB Gautam");
+    const inputValue = screen.getByDisplayValue("DB Gautam");
+    expect(inputValue).toBeInTheDocument();
   });
 
-  test.only("button click event test case", () => {
+  test("button click event test case", () => {
     render(<Users />);
     const btn = screen.getByRole("button");
     fireEvent.click(btn);
     expect(screen.getByText("Submit")).toBeInTheDocument();
+  });
+
+  test.only("button click event test case with data testid", () => {
+    render(<Users />);
+    const btn = screen.getByTestId("btn1");
+    fireEvent.click(btn);
+    expect(screen.getByText("Submit")).toBeInTheDocument();
+  });
+
+  test("button click event test case with other method in helper", () => {
+    expect(handleOtherMethodClick()).toMatch("Hi");
+    expect(handleOtherMethodClick()).toBe("Hi");
+  });
+
+  test("multiple button check with getAllByRole", () => {
+    render(<Users />);
+    const buttons = screen.getAllByRole("button");
+    buttons.forEach((_, i) => {
+      expect(buttons[i]).toBeInTheDocument();
+    });
+  });
+
+  test("mutliple checkbox testcase using getAllByLabel", () => {
+    render(<Users />);
+    const checkboxes = screen.getAllByLabelText("Is Passed");
+    for (let i = 0; i < checkboxes.length; i++) {
+      expect(checkboxes[i]).toBeInTheDocument();
+      expect(checkboxes[0]).toHaveClass("custom-checkbox");
+      expect(checkboxes[1]).toHaveAttribute("id");
+    }
   });
 });
 
