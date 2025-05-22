@@ -18,9 +18,25 @@ describe("Users", () => {
 
   test("renders paragraph", () => {
     render(<Users />);
-    expect(
-      screen.getByText(/This is the users list page/i)
-    ).toBeInTheDocument();
+    const paragraph = screen.getByText("users list page", {
+      exact: false,
+    });
+    expect(paragraph).toBeInTheDocument();
+  });
+
+  test("text match with regex", () => {
+    render(<Users />);
+    // const paragraph = screen.getByText(/Users list page/i);
+    const paragraph = screen.getByText(/Users a?list page/i);
+    expect(paragraph).toBeInTheDocument();
+  });
+
+  test("text match with function", () => {
+    render(<Users />);
+    const text = screen.getByText((content) => {
+      return content.startsWith("This");
+    });
+    expect(text).toBeInTheDocument();
   });
 
   test("renders a list of users", async () => {
@@ -57,12 +73,13 @@ describe("Users", () => {
     expect(input).toHaveAttribute("placeholder", "Enter username");
   });
 
-  test.only("input field updates on change", () => {
+  test("input field updates on change", () => {
     render(<Users />);
     const input: HTMLInputElement = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "DB" } });
     expect((input as HTMLInputElement).value).toBe("DB Gautam");
     const inputValue = screen.getByDisplayValue("DB Gautam");
+    expect(input).toBeDisabled();
     expect(inputValue).toBeInTheDocument();
   });
 
@@ -73,7 +90,7 @@ describe("Users", () => {
     expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 
-  test.only("button click event test case with data testid", () => {
+  test("button click event test case with data testid", () => {
     render(<Users />);
     const btn = screen.getByTestId("btn1");
     fireEvent.click(btn);
@@ -101,6 +118,26 @@ describe("Users", () => {
       expect(checkboxes[0]).toHaveClass("custom-checkbox");
       expect(checkboxes[1]).toHaveAttribute("id");
     }
+  });
+
+  test("image alt test case", () => {
+    render(<Users />);
+    const images = screen.getAllByAltText("image");
+    images.forEach((image) => {
+      expect(image).toBeInTheDocument();
+    });
+  });
+
+  test("test case for text queryBy", () => {
+    render(<Users />);
+    const text = screen.queryByText("Login");
+    expect(text).toBeInTheDocument();
+  });
+
+  test.only("test case for text findByText", async () => {
+    render(<Users />);
+    const text = await screen.findByText("Logout", {}, { timeout: 3000 });
+    expect(text).toBeInTheDocument();
   });
 });
 
