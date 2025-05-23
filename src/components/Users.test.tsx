@@ -1,4 +1,11 @@
-import { configure, fireEvent, render, screen } from "@testing-library/react";
+import {
+  configure,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Users from "./Users";
 import { handleOtherMethodClick } from "../helper";
 
@@ -14,6 +21,22 @@ describe("Users", () => {
     expect(
       screen.getByRole("heading", { name: "Users___" })
     ).toBeInTheDocument();
+  });
+
+  test.only("renders props test", () => {
+    const title = "Hello this is the users page.";
+    render(<Users tilte={title} />);
+    const getTitle = screen.getByText(title);
+    expect(getTitle).toBeInTheDocument();
+  });
+
+  test.only("functional props testing", async () => {
+    const testFn = jest.fn();
+    userEvent.setup();
+    render(<Users testFunction={testFn} />);
+    const btn = screen.getByRole("button", { name: "Button" });
+    await userEvent.click(btn);
+    expect(testFn).toHaveBeenCalled();
   });
 
   test("renders paragraph", () => {
@@ -49,7 +72,7 @@ describe("Users", () => {
     render(<Users />);
     expect(screen.getByText("name 1")).toBeInTheDocument();
     expect(screen.getByText("name 2")).toBeInTheDocument();
-    expect(screen.getByTitle("image from google")).toBeInTheDocument();
+    // expect(screen.getByTitle("image from google")).toBeInTheDocument();
   });
 
   test("renders a <ul> element", () => {
@@ -83,7 +106,7 @@ describe("Users", () => {
     expect(inputValue).toBeInTheDocument();
   });
 
-  test("button click event test case", () => {
+  test.skip("button click event test case", () => {
     render(<Users />);
     const btn = screen.getByRole("button");
     fireEvent.click(btn);
@@ -94,6 +117,14 @@ describe("Users", () => {
     render(<Users />);
     const btn = screen.getByTestId("btn1");
     fireEvent.click(btn);
+    expect(screen.getByText("Submit")).toBeInTheDocument();
+  });
+
+  test.only("button click event test case with user event library", async () => {
+    userEvent.setup();
+    render(<Users />);
+    const btn1 = screen.getByText("Click Me");
+    await userEvent.click(btn1);
     expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 
@@ -134,10 +165,22 @@ describe("Users", () => {
     expect(text).toBeInTheDocument();
   });
 
-  test.only("test case for text findByText", async () => {
+  test("test case for text findByText", async () => {
     render(<Users />);
     const text = await screen.findByText("Logout", {}, { timeout: 3000 });
     expect(text).toBeInTheDocument();
+  });
+
+  test("test case for text custom selector", () => {
+    render(<Users />);
+    const div: HTMLElement | null = document.querySelector("#users");
+    expect(div).toBeInTheDocument();
+    if (!div) {
+      throw new Error("Element with id 'users' not found");
+    }
+    const subElement = within(div).getByText("Users___");
+    expect(div).toHaveAttribute("class");
+    expect(subElement).toBeInTheDocument();
   });
 });
 

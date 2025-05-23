@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { handleOtherMethodClick } from "../helper";
 
-const Users = () => {
+const Users = ({
+  tilte,
+  testFunction,
+}: {
+  tilte?: string;
+  testFunction?: MouseEventHandler<HTMLButtonElement>;
+}) => {
   const [name, setName] = useState("");
   const [btnName, setBtnName] = useState("");
 
@@ -17,9 +23,10 @@ const Users = () => {
     }, 1000);
   });
   return (
-    <div>
+    <div id="users" className="custom-class">
       <h1>Users___</h1>
-      <p>This is the users list page.</p>
+      <h3>{tilte}</h3>
+      <button onClick={testFunction}>Button</button>
       <ul>
         <li>name 1</li>
         <li>name 2</li>
