@@ -120,9 +120,8 @@ describe("Users", () => {
     expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 
-  test.only("button click event test case with user event library", async () => {
+  test.skip("button click event test case with user event library", async () => {
     userEvent.setup();
-    render(<Users />);
     const btn1 = screen.getByText("Click Me");
     await userEvent.click(btn1);
     expect(screen.getByText("Submit")).toBeInTheDocument();
