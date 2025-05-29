@@ -1,13 +1,13 @@
-beforeAll(() => {
-  console.log("Before all tests");
-});
+// beforeAll(() => {
+//   console.log("Before all tests");
+// });
 
 describe("Sample Test Case", () => {
-  test("Sample Test", () => {
+  fit("Sample Test", () => {
     expect(true).toBe(true);
   });
 });
 
-afterAll(() => {
-  console.log("After all tests");
-});
+// afterAll(() => {
+//   console.log("After all tests");
+// });

@@ -1,5 +1,5 @@
-export default {
-  testEnvironment: "jsdom",
+import type { Config } from "jest";
+const config: Config = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
@@ -9,3 +9,10 @@ export default {
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
+
+if (process.env.MOCK_API !== "true") {
+  // If MOCK_API is true, set up the MSW environment (or anything specific you need)
+  config.testEnvironment = "jsdom"; // You can use msw or any other setup
+}
+
+export default config;

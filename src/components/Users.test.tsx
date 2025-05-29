@@ -1,6 +1,7 @@
 import {
   configure,
   fireEvent,
+  // logRoles,
   render,
   screen,
   within,
@@ -16,21 +17,25 @@ beforeEach(() => {
 });
 
 describe("Users", () => {
-  test("renders heading", async () => {
+  console.log(process.env.MOCK_API, "apppppp");
+  test.only("renders heading", async () => {
     render(<Users />);
     expect(
       screen.getByRole("heading", { name: "Users___" })
     ).toBeInTheDocument();
   });
 
-  test.only("renders props test", () => {
+  test("renders props test", () => {
     const title = "Hello this is the users page.";
     render(<Users tilte={title} />);
+    // screen.debug();
+    // logRoles(screen.getByRole("heading", { name: "Users___" }));
     const getTitle = screen.getByText(title);
     expect(getTitle).toBeInTheDocument();
+    // screen.debug();
   });
 
-  test.only("functional props testing", async () => {
+  test("functional props testing", async () => {
     const testFn = jest.fn();
     userEvent.setup();
     render(<Users testFunction={testFn} />);
@@ -166,8 +171,10 @@ describe("Users", () => {
 
   test("test case for text findByText", async () => {
     render(<Users />);
+    screen.debug();
     const text = await screen.findByText("Logout", {}, { timeout: 3000 });
     expect(text).toBeInTheDocument();
+    screen.debug();
   });
 
   test("test case for text custom selector", () => {
