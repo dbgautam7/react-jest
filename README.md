@@ -57,3 +57,16 @@ export default tseslint.config({
 Particular test files can be run by using the command pnpm run test 'filename'
 
 ```
+
+## To add the husky and lint-staged
+
+```
+pnpm install --save-dev husky lint-staged
+
+npx husky install
+
+pnpm pkg set scripts.prepare="husky install"
+
+npx husky add .husky/pre-commit "npx lint-staged"
+
+```

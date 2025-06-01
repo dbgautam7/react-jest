@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import {
   configure,
   fireEvent,
@@ -12,16 +15,11 @@ import { handleOtherMethodClick } from "../helper";
 
 configure({ testIdAttribute: "element-id" });
 
-beforeEach(() => {
-  console.log("Called before each test");
-});
-
 describe("Users", () => {
-  console.log(process.env.MOCK_API, "apppppp");
   test.only("renders heading", async () => {
     render(<Users />);
     expect(
-      screen.getByRole("heading", { name: "Users___" })
+      screen.getByRole("heading", { name: "Users___" }),
     ).toBeInTheDocument();
   });
 

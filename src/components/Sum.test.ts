@@ -1,7 +1,7 @@
 import { Sum } from "./Sum";
 
 //describe.skip is used to skip the test suite and describe.only is used to run only the test suite
-describe.skip("Sum function of 1 & 2", () => {
+describe("Sum function of 1 & 2", () => {
   test("1+2 equals 3", () => {
     expect(Sum(1, 2)).toBe(3);
   }, 1000);
